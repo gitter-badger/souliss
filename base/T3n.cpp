@@ -106,6 +106,19 @@ void Souliss_SetT31(U8 *memory_map, U8 slot)
 /**************************************************************************/
 U8 Souliss_Logic_T31(U8 *memory_map, U8 slot, U8 *trigger)
 {
+
+Serial.println(">>>\r\nLogic_T31");
+Serial.print("IN-0) ");
+Serial.println(*(memory_map + MaCaco_IN_s + slot),HEX);
+Serial.print("IN-1) ");
+Serial.println(*(memory_map + MaCaco_IN_s + slot + 1),HEX);
+Serial.print("IN-2) ");
+Serial.println(*(memory_map + MaCaco_IN_s + slot + 2),HEX);
+Serial.print("IN-3) ");
+Serial.println(*(memory_map + MaCaco_IN_s + slot + 3),HEX);
+Serial.print("IN-4) ");
+Serial.println(*(memory_map + MaCaco_IN_s + slot + 4),HEX);
+
 	U8 i_trigger=0;														// Internal trigger
 	float actual_temp, actual_setpnt, in_temp, in_setpnt;
 
@@ -114,6 +127,16 @@ U8 Souliss_Logic_T31(U8 *memory_map, U8 slot, U8 *trigger)
 	in_setpnt     = Souliss_SinglePrecisionFloating(memory_map + MaCaco_IN_s + slot + 3);
 	actual_temp   = Souliss_SinglePrecisionFloating(memory_map + MaCaco_OUT_s + slot + 1);
 	actual_setpnt = Souliss_SinglePrecisionFloating(memory_map + MaCaco_OUT_s + slot + 3);
+
+Serial.println("in_temp ");
+Serial.print(in_temp);
+Serial.println("in_setpnt ");
+Serial.print(in_setpnt);
+Serial.println("actual_temp ");
+Serial.print(actual_temp);
+Serial.println("actual_setpnt ");
+Serial.print(actual_setpnt);
+Serial.println("");
 
 	// Trig the next change of the state
 	i_trigger = Souliss_TRIGGED;
@@ -248,10 +271,22 @@ U8 Souliss_Logic_T31(U8 *memory_map, U8 slot, U8 *trigger)
 	}		
 	
 	memory_map[MaCaco_IN_s + slot] = Souliss_T3n_RstCmd;					// Reset
+
+
 	
 	// Convert the processed values in half precision floating points
 	Souliss_HalfPrecisionFloating((memory_map + MaCaco_OUT_s + slot + 1), &actual_temp);
 	Souliss_HalfPrecisionFloating((memory_map + MaCaco_OUT_s + slot + 3), &actual_setpnt);
+
+Serial.println("in_temp ");
+Serial.print(in_temp);
+Serial.println("in_setpnt ");
+Serial.print(in_setpnt);
+Serial.println("actual_temp ");
+Serial.print(actual_temp);
+Serial.println("actual_setpnt ");
+Serial.print(actual_setpnt);
+Serial.println("<<<");
 		
 	// Update the trigger
 	if(i_trigger)
