@@ -28,8 +28,8 @@
 #define MYLEDLOGIC          0               
 
 // **** Define here the right pin for your ESP module **** 
-#define	OUTPUTPIN			5
-#define ANALOGDAQ               0           // This is the memory slot used for the execution of the logic in network_address1
+#define OUTPUTPIN           5
+#define ANALOGDAQ               1           // This is the memory slot used for the execution of the logic in network_address1
 #define DEADBAND                0.05        // Deadband value 5%  
 
 uint8_t ip_address[4]  = {192, 168, 1, 77};
@@ -41,14 +41,16 @@ float analogvalue = 12.12;
 
 void setup()
 {   
+    Serial.begin(115200);
+
     Initialize();
 
     // Connect to the WiFi network and get an address from DHCP
     SetIPAddress(ip_address, subnet_mask, ip_gateway);
     SetAsGateway(myvNet_address);  
-	
+    
     Set_SimpleLight(MYLEDLOGIC);        // Define a simple LED light logic
-	Set_Thermostat(ANALOGDAQ);          // Set a logic for the thermostat
+    Set_Thermostat(ANALOGDAQ);          // Set a logic for the thermostat
  
 }
 
@@ -65,7 +67,7 @@ void loop()
         // Execute the code every 11 time_base_fast       
         FAST_91110ms() {  
 
-			analogvalue+=0.5;
+            analogvalue+=0.5;
             ImportAnalog(ANALOGDAQ+1,analogvalue);
 
             // The logic is executed faster than the data acquisition just to have a 
